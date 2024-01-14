@@ -5,46 +5,58 @@ import { useRef, useState } from 'react';
 
 export function PopUp() {
   const [openModal, setOpenModal] = useState(true);
-  const emailInputRef = useRef<HTMLInputElement>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    lastname: "",
+    email: "",
+  })
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+    [e.target.name]: e.target.value
+    }))
+  }
+
+  const handleSubmit = (e) => {
+    fetch('localhost:8000/saveuserdata', {
+      method: 'post',
+      body: formData,
+    })
+  }
+
 
   return (
     <>
       <Modal show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
         <Modal.Header />
         <Modal.Body>
-          <div className="space-y-6">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="email" value="Your email" />
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-6">
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white">Enter you information</h3>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="name" value="Name" />
+                </div>
+                <TextInput id="name" name='name' type="text" required onChange={handleChange} />
               </div>
-              <TextInput id="email" placeholder="name@company.com" required />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="password" value="Your password" />
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="lastname" value="Lastname" />
+                </div>
+                <TextInput id="lastname" name='lastname' type="text" required onChange={handleChange} />
               </div>
-              <TextInput id="password" type="password" required />
-            </div>
-            <div className="flex justify-between">
-              <div className="flex items-center gap-2">
-                <Checkbox id="remember" />
-                <Label htmlFor="remember">Remember me</Label>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="email" value="Email" />
+                </div>
+                <TextInput id="email" name='email' placeholder="name@company.com" required onChange={handleChange} />
               </div>
-              <a href="#" className="text-sm text-cyan-700 hover:underline dark:text-cyan-500">
-                Lost Password?
-              </a>
+              <div className="w-full flex flex-wrap gap-2 justify-center items-center">
+                <Button type='submit'>CTA</Button>
+              </div>
             </div>
-            <div className="w-full">
-              <Button>Log in to your account</Button>
-            </div>
-            <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
-              Not registered?&nbsp;
-              <a href="#" className="text-cyan-700 hover:underline dark:text-cyan-500">
-                Create account
-              </a>
-            </div>
-          </div>
+          </form>
         </Modal.Body>
       </Modal>
     </>
