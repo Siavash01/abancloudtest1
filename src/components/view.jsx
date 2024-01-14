@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PopUp } from "./popup";
-import { Spinner } from 'flowbite-react';
+import { CenderedSpinner } from "./centeredspinner/view";
 
 
 export const MainView = () => {
@@ -11,15 +11,12 @@ export const MainView = () => {
         }, 2000);
     });
     return (
-        <>
+        <div className="flex flex-wrap gap-2 h-screen w-screen justify-center items-center">
         {
             loading?
-            <p>
-                <Spinner aria-label="Default status example" />
-            </p>
+            <CenderedSpinner/>
             : <PopUp/>
-            
         }
-        </>
+        </div>
     );
 }

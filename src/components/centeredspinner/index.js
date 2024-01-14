@@ -1,0 +1,1 @@
+export {CenderedSpinner} from "./view"
