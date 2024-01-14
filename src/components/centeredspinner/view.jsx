@@ -1,14 +1,11 @@
 'use client';
 
-import { useRef } from 'react';
 import { Spinner } from 'flowbite-react';
 
 export function CenderedSpinner () {
-  const emailInputRef = useRef<HTMLInputElement>(null);
-
   return (
-    <>
+    <div className='h-screen flex justify-center items-center'>
       <Spinner aria-label="Center-aligned spinner example" />
-    </>
+    </div>
   );
 }

@@ -1,10 +1,13 @@
 'use client';
 
-import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
-import { useRef, useState } from 'react';
+import { Button, Label, Modal, TextInput } from 'flowbite-react';
+import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export function PopUp() {
   const [openModal, setOpenModal] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
@@ -19,10 +22,19 @@ export function PopUp() {
   }
 
   const handleSubmit = (e) => {
-    fetch('localhost:8000/saveuserdata', {
-      method: 'post',
-      body: formData,
-    })
+    e.preventDefault();
+    console.log(formData);
+
+    setLoading(true);
+
+    try {
+      axios.post('http://localhost:8000/api/saveuserdata', formData);
+      toast.success('request send successfully');
+    } catch (e) {
+      toast.error('error sending request');
+    } finally {
+      setLoading(false);
+    }
   }
 
 
@@ -53,7 +65,7 @@ export function PopUp() {
                 <TextInput id="email" name='email' placeholder="name@company.com" required onChange={handleChange} />
               </div>
               <div className="w-full flex flex-wrap gap-2 justify-center items-center">
-                <Button type='submit'>CTA</Button>
+                <Button type='submit' disabled={loading}>CTA</Button>
               </div>
             </div>
           </form>

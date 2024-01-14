@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { PopUp } from "./popup";
+import { useEffect, useState, Suspense, lazy } from "react";
 import { CenderedSpinner } from "./centeredspinner/view";
 
+const PopUp = lazy(() => import('./popup'));
 
 export const MainView = () => {
     const [loading, setLoading] = useState(true);
@@ -11,12 +11,12 @@ export const MainView = () => {
         }, 2000);
     });
     return (
-        <div className="flex flex-wrap gap-2 h-screen w-screen justify-center items-center">
-        {
-            loading?
-            <CenderedSpinner/>
-            : <PopUp/>
-        }
-        </div>
+        <Suspense fallback={<CenderedSpinner />}>
+            <div className="flex flex-wrap gap-2 h-screen w-screen justify-center items-center">
+            {
+                <PopUp/>
+            }
+            </div>
+        </Suspense>
     );
 }

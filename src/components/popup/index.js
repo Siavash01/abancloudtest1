@@ -1,1 +1,2 @@
-export {PopUp} from "./view"
+import {PopUp} from "./view"
+export default PopUp
