@@ -5,7 +5,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-export function PopUp() {
+export function PopUp({onAdd}) {
   const [openModal, setOpenModal] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -21,15 +21,20 @@ export function PopUp() {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
 
     setLoading(true);
 
     try {
-      axios.post('http://localhost:8000/api/saveuserdata', formData);
-      toast.success('request send successfully');
+      const res = await axios.post('http://localhost:8000/api/saveuserdata', formData);
+      if (res.data) {
+        onAdd && onAdd();
+        toast.success('request send successfully');
+      } else {
+        toast.error('error sending request');
+      }
     } catch (e) {
       toast.error('error sending request');
     } finally {

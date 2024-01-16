@@ -1,21 +1,16 @@
-import { useEffect, useState, Suspense, lazy } from "react";
+import { Suspense, lazy, useState } from "react";
 import { CenderedSpinner } from "./centeredspinner/view";
+import { UserTable } from "./usertable/view"
 
 const PopUp = lazy(() => import('./popup'));
 
 export const MainView = () => {
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        setInterval(() => {
-            setLoading(false);
-        }, 2000);
-    });
+    const [isrefresh, setIsrefresh] = useState(false);
     return (
         <Suspense fallback={<CenderedSpinner />}>
-            <div className="flex flex-wrap gap-2 h-screen w-screen justify-center items-center">
-            {
-                <PopUp/>
-            }
+            <UserTable isrefresh={isrefresh}/>
+            <div className="flex flex-wrap gap-2 justify-center items-center">
+                <PopUp onAdd={() => setIsrefresh( state => !state)}/>
             </div>
         </Suspense>
     );
