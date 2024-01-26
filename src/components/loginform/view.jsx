@@ -9,9 +9,8 @@ export function LoginForm({onAdd}) {
   const [openModal, setOpenModal] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    lastname: "",
     email: "",
+    password: "",
   })
 
   const handleChange = (e) => {
@@ -31,12 +30,12 @@ export function LoginForm({onAdd}) {
       const res = await axios.post('http://localhost:8000/api/admin', formData);
       if (res.data) {
         onAdd && onAdd();
-        toast.success('request send successfully');
+        toast.success('Logged in');
       } else {
-        toast.error('error sending request!!!!!!!!!!!!!!!!!!!');
+        toast.error('error logging in');
       }
     } catch (e) {
-      toast.error('error sending request');
+      toast.error('error loggin in');
     } finally {
       setLoading(false);
     }
@@ -51,26 +50,23 @@ export function LoginForm({onAdd}) {
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
               <h3 className="text-xl font-medium text-gray-900 dark:text-white">Admin Login</h3>
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="name" value="Name" />
-                </div>
-                <TextInput id="name" name='name' type="text" required onChange={handleChange} />
-              </div>
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="lastname" value="Lastname" />
-                </div>
-                <TextInput id="lastname" name='lastname' type="text" required onChange={handleChange} />
-              </div>
+
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="email" value="Email" />
                 </div>
                 <TextInput id="email" name='email' placeholder="name@company.com" required onChange={handleChange} />
               </div>
+
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="password" value="Password" />
+                </div>
+                <TextInput id="password" type='password' name='password' placeholder='********' required onChange={handleChange} />
+              </div>
+
               <div className="w-full flex flex-wrap gap-2 justify-center items-center">
-                <Button type='submit' disabled={loading}>CTA</Button>
+                <Button type='submit' disabled={loading}>Login</Button>
               </div>
             </div>
           </form>

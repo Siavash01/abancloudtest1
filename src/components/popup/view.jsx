@@ -33,7 +33,7 @@ export function PopUp({onAdd}) {
         onAdd && onAdd();
         toast.success('request send successfully');
       } else {
-        toast.error('error sending request!!!!!!!!!!!!!!!!!!!');
+        toast.error('error sending request');
       }
     } catch (e) {
       toast.error('error sending request');
