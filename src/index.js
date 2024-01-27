@@ -10,7 +10,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { LoginForm } from './components/loginform/view';
+import { UserTable } from "./components/usertable"
+import { isLogin } from './utils/tokenstorage';
 
+console.log(isLogin);
 
 const router = createBrowserRouter([
   {
@@ -22,9 +25,9 @@ const router = createBrowserRouter([
       },
       {
         path: "admin",
-        element: <LoginForm />,
+        element: isLogin()? <UserTable /> : <LoginForm />,
       },
-    {path: '*', element: <div>404 Not Found</div>}
+      {path: '*', element: <div>404 Not Found</div>}
     ],
   },
 ]);

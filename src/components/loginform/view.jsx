@@ -4,10 +4,15 @@ import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { isLogin, setToken } from '../../utils/tokenstorage';
+
+import { UserTable } from '../../components/usertable';
+
+import { useNavigate } from 'react-router-dom';
 
 export function LoginForm({onAdd}) {
-  const [openModal, setOpenModal] = useState(true);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -30,7 +35,9 @@ export function LoginForm({onAdd}) {
       const res = await axios.post('http://localhost:8000/api/admin', formData);
       if (res.data) {
         onAdd && onAdd();
-        toast.success('Logged in');
+        setToken(res.data.token);
+        navigate('/admin');
+        console.log('navigated');
       } else {
         toast.error('error logging in');
       }
@@ -41,37 +48,35 @@ export function LoginForm({onAdd}) {
     }
   }
 
+  if (isLogin()) {
+    return <UserTable />
+  }
 
   return (
     <>
-      <Modal show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
-        <Modal.Header />
-        <Modal.Body>
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-6">
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white">Admin Login</h3>
+    <form onSubmit={handleSubmit} className='flex items-center justify-center w-screen h-screen'>
+      <div className="space-y-6 w-96">
+        <h3 className="text-xl font-medium text-gray-900 dark:text-white">Admin Login</h3>
 
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="email" value="Email" />
-                </div>
-                <TextInput id="email" name='email' placeholder="name@company.com" required onChange={handleChange} />
-              </div>
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="email" value="Email" />
+          </div>
+          <TextInput id="email" name='email' placeholder="name@company.com" required onChange={handleChange} />
+        </div>
 
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="password" value="Password" />
-                </div>
-                <TextInput id="password" type='password' name='password' placeholder='********' required onChange={handleChange} />
-              </div>
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="password" value="Password" />
+          </div>
+          <TextInput id="password" type='password' name='password' placeholder='********' required onChange={handleChange} />
+        </div>
 
-              <div className="w-full flex flex-wrap gap-2 justify-center items-center">
-                <Button type='submit' disabled={loading}>Login</Button>
-              </div>
-            </div>
-          </form>
-        </Modal.Body>
-      </Modal>
+        <div className="w-full flex flex-wrap gap-2 justify-center items-center">
+          <Button type='submit' disabled={loading}>Login</Button>
+        </div>
+      </div>
+    </form>
     </>
   );
 }

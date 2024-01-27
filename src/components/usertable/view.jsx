@@ -2,7 +2,7 @@
 'use client';
 
 import { Table } from 'flowbite-react';
-import axios from 'axios';
+import axios from '../../axois';
 import { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import { Spinner } from 'flowbite-react';
@@ -43,7 +43,7 @@ export function UserTable({isrefresh}) {
           <Table.HeadCell>Email</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {data.map(item => <UserTableRow name={item.name} lastname={item.lastname} email={item.email}/>)}
+          {data.map(item => <UserTableRow key={item.email} name={item.name} lastname={item.lastname} email={item.email}/>)}
         </Table.Body>
       </Table>
     </div>
